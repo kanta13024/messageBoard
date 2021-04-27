@@ -104,7 +104,10 @@ $_POST = array();
                 <li class="scroll-item">
                     <a href="">
                         <time class="date" datetime="2021-03-29">2021.03.29</time>
-                        <span class="title">Worksを更新しました</span>
+                        <div class="circle">
+                        <span class="name">神原検事</span>
+                        </div>
+                        <span class="title">Worksを更新しましたWorksを更新しましたWorksを更新しましたWorksを更新しましたWorksを更新しましたWorksを更新しましたWorksを更新しました</span>
                     </a>
                     <a class="update" href="update.php">変更する</a>
                     <a class="delete" href="delete.php">削除する</a>
@@ -141,15 +144,7 @@ $_POST = array();
                 <li class="scroll-item">
                     <a href="">
                         <time class="date" datetime="2021-03-29">2021.03.29</time>
-                        <span class="title">Worksを更新しましたよろこびのあまり、ちんこがでてきたっていうのは嘘だから気にしないで</span>
-                    </a>
-                </li>
-
-                <li class="scroll-item">
-                    <a href="">
-                        <time class="date" datetime="2021-03-29">2021.03.29</time>
-                        <span class="name">神原</span>
-                        <span class="title">Worksを更新しました</span>
+                        <span class="title">Worksを更新しましたよろこびのあまり、ちんこがでてきたっていうのは嘘だから気にしないでテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミー</span>
                     </a>
                 </li>
 
@@ -165,11 +160,11 @@ $_POST = array();
                                 <table border="1">
                                     <tr>
                                         <td>名前</td>
-                                        <td><input type="text" name="m_name" size="30"></td>
+                                        <td><input type="text" id="m_name" name="m_name" size="30"></td>
                                     </tr>
                                     <tr>
                                         <td>メッセージ</td>
-                                        <td><textarea name="m_message" cols="30" rows="10" style="margin: 0px; width: 595px; height: 70px;"></textarea></td>
+                                        <td><textarea name="m_message" id="m_message" cols="30" rows="10" style="margin: 0px; width: 595px; height: 70px;"></textarea></td>
                                     </tr>
                                     <tr>
                                         <td colspan="2" style="text-align:center">
@@ -178,7 +173,8 @@ $_POST = array();
                                     </tr>
                                 </table>
                             </from>
-                                <div class="samplemodal-close"><span>閉じる</span></div>
+                            <div class="append"></div>
+                            <div class="samplemodal-close"><span>閉じる</span></div>
                         </div>
                     </div>
                 </div>
@@ -186,7 +182,34 @@ $_POST = array();
         </main>
 
         <div class="sidemenu">
+          <div class="sidemenu-title">
+            <span class="sidemenu-head">
+              Tool Box
+            </span>
+         </div>
 
+          <ul>
+        <li>
+          <div class="sidemenu-box">
+            <a href="./index.html">
+             <span class="title">
+               Make Password!
+             </span>
+            </a>
+          </div>
+        </li>
+        
+        <li>
+          <div class="sidemenu-box">
+            <a href="./count.html">
+              <span class="title">
+                Count Word!
+              </span>
+             </a>
+          </div>
+        </li>
+
+      </ul>
         </div>
     </div>
 

@@ -47,6 +47,7 @@ a:link, a:visited, a:hover, a:active {
 #openSidebarMenu {
   transition: all 0.3S;
   display: none;
+  z-index: 99;
 }
 
 .sidebarIconToggle {
@@ -124,6 +125,7 @@ input[type="checkbox"]:checked ~ #sidebarMenu {
 }
 
 #sidebarMenu {
+  z-index: 96;
   height: 100%;
   text-align: center;
   position: fixed;
@@ -263,7 +265,7 @@ input[type="checkbox"]:checked ~ #sidebarMenu {
   display: none;
 }
 
-/* ニュース */
+/* メッセージ一覧 */
 .heading {
   padding: 10px 12px;
   background: url('../images/bg-slash.gif');
@@ -274,6 +276,10 @@ input[type="checkbox"]:checked ~ #sidebarMenu {
 .scroll-list {
   margin-bottom: 30px;
   list-style-type: none;
+}
+
+.scroll-list .scroll-item {
+  position: relative;
 }
 
 .scroll-list .scroll-item a {
@@ -299,27 +305,47 @@ input[type="checkbox"]:checked ~ #sidebarMenu {
 
 .scroll-list .name {
   display: inline-block;
-  background-color: #33d0f7;
-  width: 7%;
   font-size: 1.0rem;
   letter-spacing: 1px;
   font-weight: bold;
+  padding-top: 34%;
+  overflow: hidden;
 }
 
+.scroll-item .circle {
+  text-align: center;
+  vertical-align: middle;
+  background-color: #33d0f7;
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
 
 .scroll-list .title {
   display: inline-block;
-  width: 73%;
+  width: 50%;
   padding-left: 15px;
   font-size: 1.2rem;
-  overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
   font-size: 1.2rem;
 }
 
+
 .scroll-list .scroll-item .update {
+  font-size: 1.2rem;
   color: black;
+  position: absolute;
+  right: 75px;
+  bottom: 0px;
+}
+
+.scroll-list .scroll-item .delete {
+  font-size: 1.2rem;
+  color: black;
+  position: absolute;
+  right: 0px;
+  bottom: 0px;
 }
 
 .sidemenu {
@@ -328,7 +354,7 @@ input[type="checkbox"]:checked ~ #sidebarMenu {
   width: 275px;
 }
 
-/*  */
+/*データ入力画面  */
 html.modalset {
   overflow: hidden;
 }
@@ -350,7 +376,6 @@ html.modalset {
   -webkit-overflow-scrolling: touch;
   -ms-overflow-style: none;
   overflow: -moz-scrollbars-none;
-  white-space: nowrap;
 }
 .samplemodal-wrap::-webkit-scrollbar {
   display: none;
@@ -388,6 +413,66 @@ html.modalset {
 /* .samplemodal-box　.samplemodal-close {
 
 } */
+
+
+/*サイドバーメニュー欄*/
+.sidemenu {
+    display: block;
+    float: right;
+    width: 275px;
+    height: 900px;
+    border: 1px solid #F7F8F7;
+}
+
+.sidemenu .sidemenu-title {
+    width: 100%;
+    padding-bottom: 18px;
+    text-align: center;
+}  
+
+.sidemenu .sidemenu-title {
+    width: 100%;
+    background-color: black;
+    padding-left: 15px;
+    padding-top: 12px;
+    padding-bottom: 13px;
+    line-height: 1;
+}
+
+.sidemenu .sidemenu-title .sidemenu-head {
+    color: white;
+}
+
+.sidemenu > ul > li {
+    width: 100%;
+    height: 70px;
+    padding-bottom: 10px;
+}
+
+.sidemenu > ul {
+  list-style: none;
+}
+
+.sidemenu > ul > li > .sidemenu-box {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: #F7F8F7;
+    text-align: center;
+} 
+
+.sidemenu > ul > li > .sidemenu-box .title {
+    display: inline-block;
+    margin-top: 20px;
+    text-decoration: none;
+    color: black;
+    transition: 0.3s;
+}
+
+.sidemenu > ul > li > .sidemenu-box .title:hover {
+    opacity: 0.8;
+    transform: translateY(-4px);
+}
 
 /* レイアウト確認用のCSS */
 
