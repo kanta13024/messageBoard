@@ -1,4 +1,3 @@
-
   //名前欄のバリデーション
 $(function () {
   $("input#m_name").focus(function(){

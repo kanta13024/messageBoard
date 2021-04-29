@@ -1,7 +1,38 @@
 <?php
-require_once('dbc.php');
-?>
+// セッションスタート
+session_start();
 
+if(empty($_SESSION)) {
+    exit();
+}
+// データベースへの接続
+require_once('dbc.php');
+$dbh = dbConect();
+
+// 変更内容の取得(変更データの主キーを含む)
+$m_id = $_SESSION["m_id"];
+$m_name = htmlspecialchars($_SESSION["m_name"], ENT_QUOTES, "UTF-8");
+$m_message = htmlspecialchars($_SESSION["m_message"], ENT_QUOTES, "UTF-8");
+
+// データの変更
+$updateSql = "UPDATE message SET m_name = :m_name, m_message = :m_message, m_dt = NOW() WHERE m_id = :m_id";
+$updateStmt = $dbh->prepare($updateSql);
+$updateStmt->bindParam(":m_id", $m_id);
+$updateStmt->bindParam("m_name", $m_name);
+$updateStmt->bindParam("m_message", $m_message);
+$updateStmt->execute();
+
+// エラーチェック
+$error = $updateStmt->errorInfo();
+if ($error[0] != "00000") {
+    $message = "データの更新に失敗しました{$error[2]}";
+} else {
+    $message = "データを更新しました。";
+}
+// セッションデータを破棄
+$_SESSION = array();
+session_destroy();
+?>
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -44,44 +75,24 @@ require_once('dbc.php');
                 <li class="nav-item"><a href="#">About</a></li>
                 <li class="nav-item"><a href="#">News</a></li>
                 <li class="nav-item"><a href="#">Topics</a></li>
-                <li class="nav-item"><a class="samplemodal-open">addmessage</a></li>
+                <li class="nav-item"><a href="#">Blog</a></li>
             </ul>
         </nav>
     </header>
-
     <div class="wrapper clearfix">
 
         <main class="main">
 
-            <h2 class="heading">メッセージ一覧</h2>
+            <h2 class="heading">投稿の編集</h2>
 
             <ul class="scroll-list">
-                <!-- データの一覧の表示 -->
-                <?php
-                foreach ($messageDate as $row) {
-                    echo "<li class=\"scroll-item\">";
-                    echo "<a href=\"#\">";
-                    echo "<time class=\"date\" datetime=\"" . date("Y-m-d", strtotime($row["m_dt"])) . "\">" . date("Y-m-d", strtotime($row["m_dt"])) . "</time>";
-                    echo "<div class=\"circle\">";
-                    echo "<span class=\"name\">" . $row["m_name"] . "</span>";
-                    echo "</div>";
-                    echo "<span class=\"title\">" . nl2br($row["m_message"]) . "</span>";
-                    echo "</a>";
-                    echo "<a class=\"update\" href=\"update.php?m_id=" . $row["m_id"] . "\" >変更する</a>";
-                    echo "<a class=\"delete\" href=\"delete.php?m_id=" . $row["m_id"] . "\" >削除する</a>";
-                    echo "</li>";
-                }
-                ?>
-                <!-- 下記ダミーです -->
+                <!-- 変更データの表示 -->
                 <li class="scroll-item">
-                    <a href="">
-                        <time class="date" datetime="2021-03-29">2021.03.29</time>
-                        <span class="title">テキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミー</span>
+                <a href="index.php">
+                        <span class="title"><?php echo $message ?></span>
+                        <span class="title">トップページへ戻る</span>
                     </a>
-                    <a class="update" href="#">変更する</a>
-                    <a class="delete" href="#">削除する</a>
                 </li>
-
             </ul>
 
             <!-- 投稿用データ入力画面 -->
@@ -103,7 +114,7 @@ require_once('dbc.php');
                                     </tr>
                                     <tr>
                                         <td colspan="2" style="text-align:center">
-                                            <input type="submit" id="submit" value="投稿する">
+                                            <input type="submit" value="投稿する">
                                         </td>
                                     </tr>
                                 </table>
@@ -155,28 +166,5 @@ require_once('dbc.php');
 
     </footer>
 </body>
-<script>
-// 投稿ボタンを押した時のバリデーション
-    $(function() {
-        $('input#submit').on('click', function() {
-            let error;
-            let textvalue = $("textarea#m_message").val();
-            let namevalue = $("input#m_name").val();
-            if (textvalue == "" || !textvalue.match(/[^\s\t]/) || $(this).val().length >= 150) {
-                error = true;
-            }
-            if (namevalue == "" || !namevalue.match(/[^\s\t]/)) {
-                error = true;
-            }
-
-            if (error) {
-                // エラー時の処理
-                alert("名前とメッセージは必須です");
-                return false;
-            }
-
-        })
-    })
-</script>
 
 </html>

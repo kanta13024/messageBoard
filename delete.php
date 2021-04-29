@@ -1,5 +1,23 @@
 <?php
 require_once('dbc.php');
+
+$dbh = dbConect();
+$m_id = $_GET["m_id"];
+
+// SQLのじゅんび
+$delSql = "DELETE FROM message WHERE (m_id = :m_id);";  //プレースホルダーの準備
+$delStmt = $dbh->prepare($delSql);
+$delStmt->bindParam("m_id", $m_id);     //プレースホルダーでの実行
+// SQLの実行
+$delStmt->execute();
+// エラーチェック
+$error = $delStmt->errorInfo();
+if ($error[0] != "00000") {
+    $message = "データの削除に失敗しました。{$error[2]}";
+} else {
+    $message = "データを削除しました。";
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -44,7 +62,7 @@ require_once('dbc.php');
                 <li class="nav-item"><a href="#">About</a></li>
                 <li class="nav-item"><a href="#">News</a></li>
                 <li class="nav-item"><a href="#">Topics</a></li>
-                <li class="nav-item"><a class="samplemodal-open">addmessage</a></li>
+                <li class="nav-item"><a href="#">Blog</a></li>
             </ul>
         </nav>
     </header>
@@ -53,33 +71,15 @@ require_once('dbc.php');
 
         <main class="main">
 
-            <h2 class="heading">メッセージ一覧</h2>
+            <h2 class="heading">削除の確認</h2>
 
             <ul class="scroll-list">
-                <!-- データの一覧の表示 -->
-                <?php
-                foreach ($messageDate as $row) {
-                    echo "<li class=\"scroll-item\">";
-                    echo "<a href=\"#\">";
-                    echo "<time class=\"date\" datetime=\"" . date("Y-m-d", strtotime($row["m_dt"])) . "\">" . date("Y-m-d", strtotime($row["m_dt"])) . "</time>";
-                    echo "<div class=\"circle\">";
-                    echo "<span class=\"name\">" . $row["m_name"] . "</span>";
-                    echo "</div>";
-                    echo "<span class=\"title\">" . nl2br($row["m_message"]) . "</span>";
-                    echo "</a>";
-                    echo "<a class=\"update\" href=\"update.php?m_id=" . $row["m_id"] . "\" >変更する</a>";
-                    echo "<a class=\"delete\" href=\"delete.php?m_id=" . $row["m_id"] . "\" >削除する</a>";
-                    echo "</li>";
-                }
-                ?>
-                <!-- 下記ダミーです -->
+                <!-- 削除データの表示 -->
                 <li class="scroll-item">
-                    <a href="">
-                        <time class="date" datetime="2021-03-29">2021.03.29</time>
-                        <span class="title">テキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミー</span>
+                    <a href="index.php">
+                        <span class="title"><?php echo $message ?></span>
+                        <span class="title">トップページへ戻る</span>
                     </a>
-                    <a class="update" href="#">変更する</a>
-                    <a class="delete" href="#">削除する</a>
                 </li>
 
             </ul>
@@ -103,7 +103,7 @@ require_once('dbc.php');
                                     </tr>
                                     <tr>
                                         <td colspan="2" style="text-align:center">
-                                            <input type="submit" id="submit" value="投稿する">
+                                            <input type="submit" value="投稿する">
                                         </td>
                                     </tr>
                                 </table>
@@ -155,28 +155,6 @@ require_once('dbc.php');
 
     </footer>
 </body>
-<script>
-// 投稿ボタンを押した時のバリデーション
-    $(function() {
-        $('input#submit').on('click', function() {
-            let error;
-            let textvalue = $("textarea#m_message").val();
-            let namevalue = $("input#m_name").val();
-            if (textvalue == "" || !textvalue.match(/[^\s\t]/) || $(this).val().length >= 150) {
-                error = true;
-            }
-            if (namevalue == "" || !namevalue.match(/[^\s\t]/)) {
-                error = true;
-            }
-
-            if (error) {
-                // エラー時の処理
-                alert("名前とメッセージは必須です");
-                return false;
-            }
-
-        })
-    })
-</script>
 
 </html>
+</body>
